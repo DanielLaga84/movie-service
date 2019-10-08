@@ -1,4 +1,4 @@
-package com.infoshare.movieservice.model;
+package com.infoshare.movieservice.model.movie;
 
 import java.util.Objects;
 

@@ -1,4 +1,4 @@
-package com.infoshare.movieservice.model;
+package com.infoshare.movieservice.model.movie;
 
 public enum Category {
     ACTION,
