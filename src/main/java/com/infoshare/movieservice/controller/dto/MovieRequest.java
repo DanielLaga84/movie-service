@@ -1,20 +1,27 @@
 package com.infoshare.movieservice.controller.dto;
 
-import com.infoshare.movieservice.model.movie.Actor;
 import com.infoshare.movieservice.model.movie.Category;
 import com.infoshare.movieservice.model.movie.Director;
 
+import javax.validation.constraints.*;
 import java.time.Duration;
-import java.util.List;
 import java.util.Objects;
 
 public class MovieRequest {
 
+    @Size(min = 5, max =15 )
     private String title;
+    @NotNull
     private Director director;
+    @Min(1)
+    @Max(10)
     private Double rating;
+    @NotEmpty
     private Category category;
+    @Min(1900)
+    @Max(2021)
     private Integer year;
+    @NotNull
     private Duration lengthInMinutes;
 
     public MovieRequest(String title, Director director, Double rating, Category category, Integer year, Duration lengthInMinutes) {
