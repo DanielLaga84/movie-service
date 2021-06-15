@@ -1,5 +1,6 @@
 package com.infoshare.movieservice.service;
 
+import com.infoshare.movieservice.controller.dto.MovieRequest;
 import com.infoshare.movieservice.fixtures.MovieFixtures;
 import com.infoshare.movieservice.model.movie.Category;
 import com.infoshare.movieservice.model.movie.Movie;
@@ -46,15 +47,13 @@ public class MovieService {
         return movie;
     }
 
-    public Movie updateMovie(Long id, Movie update) {
+    public Movie updateMovie(Long id, MovieRequest update) {
         Movie byId = findById(id);
         return updatedMovie(byId,update);
     }
-    private Movie updatedMovie(Movie movieToUpdate, Movie updatedMovie) {
+    private Movie updatedMovie(Movie movieToUpdate, MovieRequest updatedMovie) {
         movieToUpdate.setTitle(updatedMovie.getTitle());
         movieToUpdate.setDirector(updatedMovie.getDirector());
-        movieToUpdate.setActors(updatedMovie.getActors());
-        movieToUpdate.setOriginCountry(updatedMovie.getOriginCountry());
         movieToUpdate.setRating(updatedMovie.getRating());
         movieToUpdate.setCategory(updatedMovie.getCategory());
         movieToUpdate.setYear(updatedMovie.getYear());
