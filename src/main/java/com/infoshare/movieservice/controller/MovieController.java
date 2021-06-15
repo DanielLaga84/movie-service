@@ -3,10 +3,8 @@ package com.infoshare.movieservice.controller;
 import com.infoshare.movieservice.model.movie.Category;
 import com.infoshare.movieservice.model.movie.Movie;
 import com.infoshare.movieservice.service.MovieService;
-import com.infoshare.movieservice.validator.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,54 +25,35 @@ public class MovieController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Movie>> getAll(@RequestBody Movie movie) {
-        return ResponseEntity.ok(movieService.findAll());
+    public List<Movie> getAll(@RequestBody Movie movie) {
+        return movieService.findAll();
     }
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<Movie> getMovie(@PathVariable Long id) {
-        return movieService.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public Movie getMovie(@PathVariable Long id) {
+        return movieService.findById(id);
     }
 
     @PostMapping
-    public ResponseEntity<?> addMovie(@RequestBody Movie movie) {
-        try {
-            Movie addedMovie = movieService.addMovie(movie);
-            return ResponseEntity.ok(addedMovie);
-        } catch (ValidationException e) {
-            LOG.warn("Movie is not created: {}", movie, e);
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public Movie addMovie(@RequestBody Movie movie) {
+            return movieService.addMovie(movie);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateMovie(@PathVariable Long id, @RequestBody Movie movie) {
-        try {
-            return movieService.updateMovie(id, movie)
-                    .map(ResponseEntity::ok)
-                    .orElseGet(() -> ResponseEntity.notFound().build());
-        } catch (ValidationException e) {
-            LOG.warn("Failed to update movie with id={} and update movie data={}", movie, e);
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public Movie updateMovie(@PathVariable Long id, @RequestBody Movie movie) {
+            return movieService.updateMovie(id, movie);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteMovie(@PathVariable Long id) {
-        if (movieService.deleteMovie(id)) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public boolean deleteMovie(@PathVariable Long id) {
+      return movieService.deleteMovie(id);
     }
 
     // category?category=DRAMA
     @GetMapping("/category")
-    public ResponseEntity<List<Movie>> getMovieByCategory(@RequestParam Category category) {
+    public List<Movie> getMovieByCategory(@RequestParam Category category) {
         List<Movie> movieByCategory = movieService.findMovieByCategory(category);
-        return ResponseEntity.ok(movieByCategory);
+        return movieByCategory;
     }
 }

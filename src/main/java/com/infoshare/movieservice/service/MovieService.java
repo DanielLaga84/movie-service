@@ -4,12 +4,15 @@ import com.infoshare.movieservice.fixtures.MovieFixtures;
 import com.infoshare.movieservice.model.movie.Category;
 import com.infoshare.movieservice.model.movie.Movie;
 import com.infoshare.movieservice.validator.MovieValidator;
+import com.infoshare.movieservice.validator.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static java.lang.String.format;
 
 @Service
 public class MovieService {
@@ -30,10 +33,10 @@ public class MovieService {
         return movies;
     }
 
-    public Optional<Movie> findById(Long id) {
+    public Movie findById(Long id) {
         return movies.stream()
                 .filter(movie -> movie.getId().equals(id))
-                .findFirst();
+                .findFirst().orElseThrow(() -> new ResourceNotFoundException(format("Movie with id %d not found.", id)));
     }
 
     public Movie addMovie(Movie movie) {
@@ -43,9 +46,9 @@ public class MovieService {
         return movie;
     }
 
-    public Optional<Movie> updateMovie(Long id, Movie update) {
-        return this.findById(id)
-                .map( movie -> updatedMovie(movie,update));
+    public Movie updateMovie(Long id, Movie update) {
+        Movie byId = findById(id);
+        return updatedMovie(byId,update);
     }
     private Movie updatedMovie(Movie movieToUpdate, Movie updatedMovie) {
         movieToUpdate.setTitle(updatedMovie.getTitle());
@@ -60,8 +63,7 @@ public class MovieService {
     }
 
     public boolean deleteMovie(Long id) {
-       this.findById(id).map(movies::remove);
-        return false;
+      return movies.remove(findById(id));
     }
 
     public List<Movie> findMovieByCategory(Category category) {
