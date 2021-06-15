@@ -1,31 +1,27 @@
-package com.infoshare.movieservice.model.movie;
+package com.infoshare.movieservice.model.movie.dto;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Size;
+import com.infoshare.movieservice.model.movie.Category;
+
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Movie {
+public class MovieDto {
 
     private Long id;
-    @Size(min = 5, max = 35)
     private String title;
-    private Director director;
-    private List<Actor> actors;
+    private DirectorDto director;
+    private List<ActorDto> actors;
     private String originCountry;
-    @Min(1)
-    @Max(10)
     private Double rating;
     private Category category;
-    @Min(1900)
-    @Max(2021)
     private Integer year;
     private Duration lengthInMinutes;
 
-    public Movie(Long id, String title, Director director, List<Actor> actors, String originCountry, Double rating, Category category, Integer year, Duration lengthInMinutes) {
+    public MovieDto() {
+    }
+
+    public MovieDto(Long id, String title, DirectorDto director, List<ActorDto> actors, String originCountry, Double rating, Category category, Integer year, Duration lengthInMinutes) {
         this.id = id;
         this.title = title;
         this.director = director;
@@ -53,19 +49,19 @@ public class Movie {
         this.title = title;
     }
 
-    public Director getDirector() {
+    public DirectorDto getDirector() {
         return director;
     }
 
-    public void setDirector(Director director) {
+    public void setDirector(DirectorDto director) {
         this.director = director;
     }
 
-    public List<Actor> getActors() {
+    public List<ActorDto> getActors() {
         return actors;
     }
 
-    public void setActors(List<Actor> actors) {
+    public void setActors(List<ActorDto> actors) {
         this.actors = actors;
     }
 
@@ -113,7 +109,7 @@ public class Movie {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Movie movie = (Movie) o;
+        MovieDto movie = (MovieDto) o;
         return Objects.equals(id, movie.id) &&
                 Objects.equals(title, movie.title) &&
                 Objects.equals(director, movie.director) &&

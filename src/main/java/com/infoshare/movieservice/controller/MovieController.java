@@ -3,12 +3,16 @@ package com.infoshare.movieservice.controller;
 import com.infoshare.movieservice.controller.dto.MovieRequest;
 import com.infoshare.movieservice.model.movie.Category;
 import com.infoshare.movieservice.model.movie.Movie;
+import com.infoshare.movieservice.model.movie.dto.ActorDto;
+import com.infoshare.movieservice.model.movie.dto.MovieDto;
 import com.infoshare.movieservice.service.MovieService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -27,23 +31,23 @@ public class MovieController {
     }
 
     @GetMapping
-    public List<Movie> getAll(@RequestBody Movie movie) {
+    public List<MovieDto> getAll() {
         return movieService.findAll();
     }
 
 
     @GetMapping("/{id}")
-    public Movie getMovie(@PathVariable Long id) {
-        return movieService.findById(id);
+    public MovieDto getMovie(@PathVariable Long id) {
+        return movieService.findDtoById(id);
     }
 
     @PostMapping
-    public Movie addMovie(@RequestBody Movie movie) {
+    public MovieDto addMovie(@RequestBody Movie movie) {
             return movieService.addMovie(movie);
     }
 
     @PutMapping("/{id}")
-    public Movie updateMovie(@PathVariable Long id, @RequestBody MovieRequest movie) {
+    public MovieDto updateMovie(@PathVariable Long id, @RequestBody @Valid MovieRequest movie) {
             return movieService.updateMovie(id, movie);
     }
 
@@ -55,8 +59,13 @@ public class MovieController {
 
     // category?category=DRAMA
     @GetMapping("/category")
-    public List<Movie> getMovieByCategory(@RequestParam Category category) {
-        List<Movie> movieByCategory = movieService.findMovieByCategory(category);
+    public List<MovieDto> getMovieByCategory(@RequestParam Category category) {
+        List<MovieDto> movieByCategory = movieService.findMovieByCategory(category);
         return movieByCategory;
+    }
+
+    @GetMapping("{id}/actors")
+    public ResponseEntity<List<ActorDto>> getActorsFromSelectedMovie(@PathVariable Long id){
+           return ResponseEntity.ok(movieService.findActorByIds(id));
     }
 }

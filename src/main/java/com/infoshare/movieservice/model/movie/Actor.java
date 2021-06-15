@@ -1,11 +1,13 @@
 package com.infoshare.movieservice.model.movie;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Actor {
     private Long id;
     private String firstName;
     private String lastName;
+    private List<Movie> movies;
 
     public Actor(Long id, String firstName, String lastName) {
         this.id = id;
@@ -37,6 +39,10 @@ public class Actor {
         this.lastName = lastName;
     }
 
+    public void setMovies(List<Movie> movies) {
+        this.movies = movies;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -50,6 +56,10 @@ public class Actor {
     @Override
     public int hashCode() {
         return Objects.hash(id, firstName, lastName);
+    }
+
+    public List<Movie> getMovies() {
+        return movies;
     }
 
     @Override

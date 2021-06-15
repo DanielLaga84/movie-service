@@ -9,14 +9,13 @@ import java.util.Objects;
 
 public class MovieRequest {
 
-    @Size(min = 5, max =15 )
+    @Size(min = 5, max = 35)
     private String title;
     @NotNull
     private Director director;
     @Min(1)
     @Max(10)
     private Double rating;
-    @NotEmpty
     private Category category;
     @Min(1900)
     @Max(2021)
